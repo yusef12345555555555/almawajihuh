@@ -1,0 +1,6 @@
+{
+  "name": "المواجهة | AL MWAJHA",
+  "description": "منصة ألعاب كرة القدم التفاعلية المتكاملة: مزادات أساطير، بناء تشكيلات، محاكاة مباريات بالذكاء الاصطناعي، غرف جماعية، وتحديات كروية حصرية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

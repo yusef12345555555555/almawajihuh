@@ -1,0 +1,12 @@
+{
+	"appId": "com.el3bhasah.app",
+	"appName": "المواجهة",
+	"webDir": "dist",
+	"backgroundColor": "#09090b",
+	"android": {
+		"backgroundColor": "#09090b"
+	},
+	"server": {
+		"androidScheme": "https"
+	}
+}

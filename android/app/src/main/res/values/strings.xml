@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">المواجهة</string>
+    <string name="title_activity_main">المواجهة</string>
+    <string name="package_name">com.el3bhasah.app</string>
+    <string name="custom_url_scheme">com.el3bhasah.app</string>
+</resources>

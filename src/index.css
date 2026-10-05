@@ -1,0 +1,488 @@
+@import "tailwindcss";
+
+/* ============================================================
+   العبها صح | EL3BHA SA7 — Design System Tokens
+   Single source of truth for color across the whole game.
+   Dark is the default competitive theme; [data-theme="light"]
+   overrides it for players who prefer a bright pitch-day look.
+   ============================================================ */
+:root {
+  --color-bg: #09090b;
+  --color-bg-elevated: #131316;
+  --color-surface: #18181b;
+  --color-surface-hover: #202024;
+  --color-border: #27272a;
+  --color-border-strong: #3f3f46;
+
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #71717a;
+
+  --color-primary: #f59e0b;
+  --color-primary-light: #fbbf24;
+  --color-primary-dark: #b45309;
+  --color-secondary: #38bdf8;
+  --color-accent: #f59e0b;
+
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-danger: #ef4444;
+  --color-live: #ef4444;
+  --color-selected: #f59e0b;
+  --color-disabled: #52525b;
+
+  --shadow-glow-primary: 0 0 25px rgba(245, 158, 11, 0.35);
+  --gradient-primary: linear-gradient(135deg, #b45309, #f59e0b, #fde047);
+  --gradient-surface: linear-gradient(180deg, #18181b, #09090b);
+
+  /* ---------- Signature Identity: "أورورا الاستاد" (Aurora Stadium) ---------- */
+  /* A distinct visual language used for premium surfaces (modals, hero
+     cards, CTAs) so they read as ONE deliberate brand, not generic
+     flat-two-color-gradient mobile-game templates. */
+  --gradient-aurora: linear-gradient(120deg, #052e2b 0%, #0b3d3a 18%, #064e3b 34%, #1e1b4b 58%, #312e81 74%, #422006 90%, #78350f 100%);
+  --gradient-foil: linear-gradient(115deg, transparent 20%, rgba(253, 224, 71, 0.35) 40%, rgba(255, 255, 255, 0.55) 50%, rgba(253, 224, 71, 0.35) 60%, transparent 80%);
+  --border-aurora: linear-gradient(135deg, rgba(52, 211, 153, 0.6), rgba(250, 204, 21, 0.6), rgba(129, 140, 248, 0.6));
+}
+
+[data-theme='light'] {
+  --color-bg: #f3f4f7;
+  --color-bg-elevated: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #eef0f4;
+  --color-border: #e2e4e9;
+  --color-border-strong: #cbd0d8;
+
+  --color-text-primary: #101218;
+  --color-text-secondary: #494f5c;
+  --color-text-muted: #8a90a0;
+
+  --color-primary: #d97706;
+  --color-primary-light: #f59e0b;
+  --color-primary-dark: #92400e;
+  --color-secondary: #0284c7;
+  --color-accent: #d97706;
+
+  --color-success: #16a34a;
+  --color-warning: #ca8a04;
+  --color-danger: #dc2626;
+  --color-live: #dc2626;
+  --color-selected: #d97706;
+  --color-disabled: #cbd5e1;
+
+  --shadow-glow-primary: 0 0 20px rgba(217, 119, 6, 0.22);
+  --gradient-surface: linear-gradient(180deg, #ffffff, #f3f4f7);
+}
+
+@layer base {
+  body {
+    @apply antialiased selection:bg-amber-500 selection:text-zinc-950;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+
+
+/* ============================================================
+   MOBILE / ANDROID SAFE AREA + LIGHT MODE HARDENING
+   The native Android status/navigation bars stay outside the app
+   content. The WebView only owns the space between those bars.
+   ============================================================ */
+html, body, #root {
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: #0b0d10;
+  color-scheme: dark;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+html[data-theme='light'] {
+  background: #f3f4f7;
+  color-scheme: light;
+}
+
+body {
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  min-height: 100dvh;
+  overflow-x: clip;
+}
+
+/* Fixed/sticky UI must never consume the system gesture/status areas. */
+.safe-bottom {
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
+}
+
+/* Native Android is configured to fit system windows. These are still
+   useful on devices/WebViews that expose safe-area variables. */
+.app-content-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+img, video, canvas, svg {
+  max-width: 100%;
+}
+
+/* Keep uploaded player artwork completely intact. */
+.player-artwork-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* Light mode translates the common hard-coded dark utility surfaces into
+   the same design tokens. Game artwork/backgrounds are not touched. */
+[data-theme='light'] .bg-zinc-950 { background-color: var(--color-bg) !important; }
+[data-theme='light'] .bg-zinc-900 { background-color: var(--color-surface) !important; }
+[data-theme='light'] .bg-zinc-800 { background-color: var(--color-surface-hover) !important; }
+[data-theme='light'] .bg-zinc-700 { background-color: #e3e6eb !important; }
+[data-theme='light'] .border-zinc-900 { border-color: var(--color-border) !important; }
+[data-theme='light'] .border-zinc-800 { border-color: var(--color-border) !important; }
+[data-theme='light'] .border-zinc-700 { border-color: var(--color-border-strong) !important; }
+[data-theme='light'] .border-zinc-600 { border-color: #b8bec8 !important; }
+[data-theme='light'] .text-zinc-700 { color: #5e6675 !important; }
+[data-theme='light'] .text-zinc-600 { color: #737b8a !important; }
+[data-theme='light'] .text-zinc-500 { color: #737b8a !important; }
+[data-theme='light'] .text-zinc-400 { color: var(--color-text-secondary) !important; }
+[data-theme='light'] .text-zinc-300 { color: #333a46 !important; }
+[data-theme='light'] .text-zinc-200 { color: #252b35 !important; }
+[data-theme='light'] .text-zinc-100 { color: #101218 !important; }
+
+/* Text that lives on translated neutral surfaces becomes readable without
+   changing white text on colored primary/CTA surfaces. */
+[data-theme='light'] .bg-zinc-950 .text-white,
+[data-theme='light'] .bg-zinc-900 .text-white,
+[data-theme='light'] .bg-zinc-800 .text-white,
+[data-theme='light'] .bg-zinc-700 .text-white,
+[data-theme='light'] .border-zinc-800 .text-white {
+  color: var(--color-text-primary) !important;
+}
+
+/* Mobile dialogs/dropdowns: never escape the viewport. */
+[data-theme] [role='dialog'],
+[data-theme] .fixed.inset-0 {
+  max-width: 100vw;
+  max-height: 100dvh;
+}
+
+/* Respect bottom gesture area for fixed bottom navigation. */
+.fixed.bottom-0 {
+  padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
+}
+
+@media (max-width: 639px) {
+  html, body, #root { width: 100%; max-width: 100%; }
+  main { min-width: 0; max-width: 100%; }
+}
+
+/* Custom Cinematic Keyframes */
+@keyframes stadiumPulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.08) translateY(-10px);
+  }
+}
+
+@keyframes holographicShine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes cardGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2), inset 0 0 15px rgba(245, 158, 11, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(245, 158, 11, 0.45), inset 0 0 25px rgba(245, 158, 11, 0.25);
+  }
+}
+
+@keyframes laserSweep {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(45deg);
+  }
+}
+
+@keyframes fogDrift {
+  0% {
+    transform: translateX(-6%) translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(4%) translateY(-4%);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateX(-6%) translateY(0);
+    opacity: 0.5;
+  }
+}
+
+@keyframes billFloat {
+  0% { transform: translateY(0) rotate(var(--bill-rot, -8deg)); }
+  50% { transform: translateY(-18px) rotate(calc(var(--bill-rot, -8deg) * -1)); }
+  100% { transform: translateY(0) rotate(var(--bill-rot, -8deg)); }
+}
+
+@keyframes questionGlowPulse {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(45, 212, 191, 0.35)); opacity: 0.85; }
+  50% { filter: drop-shadow(0 0 26px rgba(45, 212, 191, 0.65)); opacity: 1; }
+}
+
+.animate-fog-drift {
+  animation: fogDrift 14s ease-in-out infinite;
+}
+
+.animate-bill-float {
+  animation: billFloat 5s ease-in-out infinite;
+}
+
+.animate-question-glow {
+  animation: questionGlowPulse 3.2s ease-in-out infinite;
+}
+
+.animate-stadium-pulse {
+  animation: stadiumPulse 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+.animate-card-glow {
+  animation: cardGlow 3s ease-in-out infinite;
+}
+
+.animate-holo-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: holographicShine 2.5s infinite;
+}
+
+/* ---------- Signature "Aurora Stadium" surfaces ---------- */
+@keyframes auroraDrift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes foilSweep {
+  0% { transform: translateX(-120%) skewX(-15deg); }
+  100% { transform: translateX(220%) skewX(-15deg); }
+}
+
+.surface-aurora {
+  position: relative;
+  background: var(--gradient-aurora);
+  background-size: 220% 220%;
+  animation: auroraDrift 12s ease infinite;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  isolation: isolate;
+}
+
+.surface-aurora::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--border-aurora);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.8;
+}
+
+.surface-aurora::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 0.5px, transparent 0.5px);
+  background-size: 3px 3px;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+}
+
+.foil-sweep {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.foil-sweep::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: -20%;
+  width: 40%;
+  background: var(--gradient-foil);
+  animation: foilSweep 3.6s ease-in-out infinite;
+}
+
+/* ---------- Signature "Wow Moment" FX: reveals & celebrations ---------- */
+@keyframes radialBurstFX {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  60% { opacity: 0.5; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+@keyframes cardFlipRevealFX {
+  0% { transform: perspective(1000px) rotateY(180deg) scale(0.85); filter: brightness(0.4); }
+  60% { transform: perspective(1000px) rotateY(-12deg) scale(1.04); filter: brightness(1.2); }
+  100% { transform: perspective(1000px) rotateY(0deg) scale(1); filter: brightness(1); }
+}
+
+.card-flip-reveal {
+  animation: cardFlipRevealFX 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-style: preserve-3d;
+}
+
+@keyframes trophyPopFX {
+  0% { transform: scale(0.3) rotate(-12deg); opacity: 0; }
+  55% { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  75% { transform: scale(0.95) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.trophy-pop {
+  animation: trophyPopFX 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes confettiFallFX {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) translateX(var(--drift, 40px)) rotate(540deg); opacity: 0.9; }
+}
+
+@keyframes rayRotateFX {
+  0% { transform: rotate(0deg); opacity: 0.5; }
+  100% { transform: rotate(360deg); opacity: 0.5; }
+}
+
+/* ---------- Signature "Pack Opening Ritual" — anticipation before a reveal ---------- */
+@keyframes boxChargePulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(251, 191, 36, 0.4); }
+  50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(251, 191, 36, 0.65); }
+  100% { transform: scale(1.18); box-shadow: 0 0 80px rgba(251, 191, 36, 0.9); }
+}
+
+@keyframes boxChargeShake {
+  0%, 100% { transform: translateX(0) scale(1.18); }
+  20% { transform: translateX(-3px) scale(1.18); }
+  40% { transform: translateX(3px) scale(1.18); }
+  60% { transform: translateX(-2px) scale(1.18); }
+  80% { transform: translateX(2px) scale(1.18); }
+}
+
+.box-charging {
+  animation: boxChargePulse 0.9s ease-in forwards, boxChargeShake 0.35s ease-in-out 0.55s 2;
+  z-index: 30;
+}
+
+@keyframes ritualDimFX {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.ritual-dim-backdrop {
+  animation: ritualDimFX 0.35s ease-out forwards;
+}
+
+@keyframes chargeRingFX {
+  0% { stroke-dashoffset: 251; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+
+/* ===== ديل أور نو ديل — حركات الصناديق ===== */
+@keyframes dnd-case-glow {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.55)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.7)); }
+  50% { filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.95)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.7)); }
+}
+@keyframes dnd-pop-in {
+  0% { transform: scale(0.7) translateY(8px); opacity: 0; }
+  60% { transform: scale(1.08) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+@keyframes dnd-lid-open {
+  0% { transform: rotateX(0deg); }
+  100% { transform: rotateX(-62deg); }
+}
+.dnd-case-live { animation: dnd-case-glow 1.6s ease-in-out infinite; }
+.dnd-pop-in { animation: dnd-pop-in 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+
+
+/* أداء الموبايل: بلور أخف + لمسات أسرع + بدون تأخير نقر */
+html { -webkit-tap-highlight-color: transparent; }
+button, a, [role="button"] { touch-action: manipulation; }
+.backdrop-blur-xl, .backdrop-blur-md, .backdrop-blur-lg, .backdrop-blur-2xl, .backdrop-blur-3xl { --tw-backdrop-blur: blur(6px) !important; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* نص واضح فوق خلفية اللعبة بدون مربعات */
+.mw-clear * { text-shadow: 0 1px 4px rgba(0,0,0,.9); }
+.mw-clear input, .mw-clear button { text-shadow: none; }
